@@ -1,0 +1,2544 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <title>
+   Nifty Live Stock/Share Price: NSE 50 CNX NIFTY Live Stock Quote/Price, Share Price Live from NSE, NSE Realtime Charts - Moneycontrol Terminal
+  </title>
+  <meta content="Nifty Live Stock, NSE 50 Live Prices, Live Share Price, Live Market Quotes and Price, Moneycontrol Terminal" name="Keywords">
+   <meta content="NSE 50 CNX NIFTY Live Stock Quote: Nifty Live Stock/Share Price, Get Live NSE Stock/Share Price only on Moneycontrol Terminal. Real-Time NSE Stocks" name="Description">
+    <link href="http://stat.moneycontrol.co.in/mccss/terminal/gr_style.css?ep=0" rel="stylesheet" type="text/css">
+     <script src="http://stat.moneycontrol.co.in/mcjs/common/jquery-1.7.2.min.js" type="text/javascript">
+     </script>
+     <script src="http://stat.moneycontrol.co.in/mcjs/common/jquery.cycle.all.js" type="text/javascript">
+     </script>
+     <script src="http://stat.moneycontrol.co.in/tv/js/login.js" type="text/javascript">
+     </script>
+     <script src="http://stat.moneycontrol.co.in/mcjs/terminal/term_utils.js?ep=1" type="text/javascript">
+     </script>
+     <script type="text/javascript">
+      var theme_array = new Array();
+theme_array['http://stat.moneycontrol.co.in/mccss/terminal/gr_style.css?ep=0'] = 'black';
+theme_array['http://stat.moneycontrol.co.in/mccss/terminal/wh_style.css?ep=0'] = 'white';
+/*COOKIE SCRIPT*/
+function setcookie(name,value,duration)
+{
+	
+	var theme_selected = theme_array[value];
+	if(theme_selected == 'black' || theme_selected=='white'){
+	cookiestring=name+"="+escape(theme_selected)+";EXPIRES="+getexpirydate(duration)+";path=/; domain=.moneycontrol.com; ";	
+	document.cookie=cookiestring;}
+	/*if(!getcookies(name))
+		return false;*/
+}
+function getcookies(cookiename) 
+{
+	var cookiestring=document.cookie;
+	var i=0;
+	var index1=cookiestring.indexOf(cookiename);
+	if (index1==-1 || cookiename=="")
+		return "";
+
+	var index2=cookiestring.indexOf(';',index1);
+	if (index2==-1)
+		index2=cookiestring.length;
+
+	return unescape(cookiestring.substring(index1+cookiename.length+1,index2));
+}
+
+function getexpirydate( nodays){
+	var UTCstring;
+	Today = new Date();
+	nomilli=Date.parse(Today);
+	Today.setTime(nomilli+nodays*24*60*60*1000);
+	UTCstring = Today.toUTCString();
+
+	return UTCstring;
+}
+/*COOKIE SCRIPT*/
+$(document).ready(function(){
+	$('#LNTrm ul').hide();
+	$('#LNTrm').find('h2').eq('1').addClass('active').next().show();
+	
+	$('#LNTrm h2').click(function(){
+		if( $(this).next().is(':hidden') ) { 
+			$('#LNTrm h2').removeClass('active').next().slideUp();
+			$(this).toggleClass('active').next().slideDown();
+		}
+	});
+	$('#mrktSpanshot').hide();
+	$('.mrktSnap').addClass('mrktSnapAct');
+	$('.mrktSnap').click(function(){
+		$('.mrktSnap').toggleClass('mrktSnapAct');
+		$(this).toggleClass('mrktSnapAct2');
+		show_Ter_indic("1");
+		$('#mrktSpanshot').slideToggle();
+	});
+
+	$('.themeSlct a.link').hover(function(){
+		$('.themeSlct .contS').slideDown();
+	}, function(){$('.themeSlct .contS').hide();});
+	$('.themeSlct .contS').hover(function(){
+		$('.themeSlct .contS').show();
+		$('.themeSlct a.link').addClass('act');
+	}, function(){$('.themeSlct .contS').hide();$('.themeSlct a.link').removeClass('act');}); 
+
+	$(".themeSlct a").click(function() { 
+		
+		$("link").attr("href",$(this).attr('rel'));
+		var theme_css = $(this).attr('rel');
+		if(theme_css!='' && theme_css!='undefined' )
+		{
+			var inst_css_chk = theme_array[theme_css];
+			setcookie('MCTERM_THEME',theme_css,'36500');
+		}
+		
+		return false;
+	});
+	$('.wh_act').css({color:'#fff'}).parent().css({background:'#0d476d', color:'#717f8b'});
+	$('.drg_act').css({color:'#717f8b'}).parent().css({background:'#0d476d', color:'#717f8b'});
+
+	/// SCROLL SLIDESHOW START ////
+		$('#tpNews').cycle({ 
+			fx:     'fade', 
+			speed:  '1500', 
+			timeout: 3000, 
+			next:   '#nxtNws', 
+			prev:   '#prevNws'
+		});
+		$('#playTpNws').fadeOut();
+
+		$('#stopTpNws').click(function(){
+			$('#tpNews').cycle('pause');
+			$(this).fadeOut();
+			$('#playTpNws').fadeIn();
+		});
+
+		$('#playTpNws').click(function(){
+			$('#tpNews').cycle('resume');
+			$(this).fadeOut();
+			$('#stopTpNws').fadeIn();
+		});
+		/// SCROLL SLIDESHOW END ////
+
+		/// SCROLL UP DOWN START ////
+		function slideme(slideNode) {
+		var currentPosition = 0;
+		var slideWidth = 18;
+		var slides = $('.mrtkNews', slideNode);
+		var numberOfSlides = slides.length;
+		$('.slide-wrapper', slideNode).css('overflow', 'hidden');
+
+		function manageControls(position, leftControl, rightControl){
+			if(position===0){ leftControl.hide(); $('.apendDn span').css('display', 'block'); }
+			else{ leftControl.show(); $('.apendDn span').css('display', 'none'); }
+			if(position==numberOfSlides-3){ rightControl.hide(); $('.apendUp span').css('display', 'block'); }
+			else{ rightControl.show(); $('.apendUp span').css('display', 'none'); }
+		}
+
+		var slideOuter = slides.wrapAll('<div></div>')
+		.css({
+			'float' : '',
+			'height' : slideWidth
+		});
+
+		var slideInner = slideOuter.parent();
+		slideInner.css('height', slideWidth * numberOfSlides);
+		var lc = $('<a href="javascript:;" class="down"></a>');
+		$('li.apendDn').append(lc);
+		lc.bind('click', function() {
+			currentPosition -= 1;
+			manageControls(currentPosition, lc, rc);
+			// Move slideInner using margin-left
+			slideInner.animate({
+				'marginTop' : slideWidth*(-currentPosition)
+			});    
+		});
+		var rc = $('<a href="javascript:;" class="up"></a>');
+		$('li.apendUp').append(rc);
+		rc.bind('click', function() {
+			currentPosition += 1;
+			manageControls(currentPosition, lc, rc);
+			slideInner.animate({
+				'marginTop' : slideWidth*(-currentPosition)
+			});
+		});  
+		manageControls(currentPosition, lc, rc);
+	}
+
+	slideme($("#slide1"));
+
+	/// SCROLL UP DOWN END ////
+});
+var bv_chk = detectBrowserVer().split("||");
+if(bv_chk[2]!='mob')
+{
+	/*FIXED MENUE*/
+	$(window).scroll(function(event) {
+	var windw = this;
+	$.fn.followTo = function ( elem ) {
+	var $this = this,
+		$window = $(windw),
+		$bumper = $(elem),
+		bumperPos = $bumper.offset().top,
+		thisHeight = $this.outerHeight(),
+		setPosition = function(){
+			if($window.scrollTop() < 150){
+				$this.removeClass('fixed');
+				$this.removeClass('fixed2');
+			}
+			else if ($window.scrollTop() > (bumperPos - thisHeight)) {
+				$this.removeClass('fixed');
+				$this.addClass('fixed2');
+			} else {
+				$this.addClass('fixed');
+				$this.removeClass('fixed2');
+			}
+		};
+	$window.resize(function()
+	{   //console.log('window.resize');
+		//bumperPos = pos.offset().top;
+		bumperPos = $bumper.offset().top;
+		thisHeight = $this.outerHeight();
+		setPosition();
+	});
+	$window.scroll(setPosition);
+	setPosition();
+	};
+	$('#dvSrcoll').followTo('#stSrcl');
+	});
+	/*FIXED MENUE*/
+}
+function show_Ter_indic(sennif)
+{	
+	jQuery.post("/terminal/ter_sen_nfity.php", {"sect_val":"397c4e5345"}, function(data){	
+		document.getElementById('mrktSpanshot').innerHTML = data;		
+	});
+}
+     </script>
+     <style>
+      .bluefon{color:#1e7bb7;font-size:12px; font-family:Arial, Helvetica, sans-serif;}
+.clsbut{font-size:12px; font-family:Arial, Helvetica, sans-serif; color:#b0c3d3;}
+     </style>
+    </link>
+   </meta>
+  </meta>
+ </head>
+ <body>
+  <div id="warp">
+   <div id="header" style="height:142px">
+    <div class="navtp">
+     <div class="FL menu">
+      <ul>
+       <li>
+        <a href="http://www.moneycontrol.com/news/" target="_blank">
+         NEWS
+        </a>
+       </li>
+       <li>
+        <a class="active" href="http://www.moneycontrol.com/stocksmarketsindia/" target="_blank">
+         MARKETS
+        </a>
+       </li>
+       <li>
+        <a href="http://www.moneycontrol.com/mutualfundindia/" target="_blank">
+         MUTUAL FUNDS
+        </a>
+       </li>
+       <li>
+        <a href="http://www.moneycontrol.com/india/bestportfoliomanager/12/13/investment-tool" target="_blank">
+         PORTFOLIO
+        </a>
+       </li>
+       <li>
+        <a href="http://wealth.moneycontrol.com/" target="_blank">
+         WEALTH
+        </a>
+       </li>
+       <li>
+        <a href="http://mmb.moneycontrol.com/messageboardblogindia/" target="_blank">
+         MESSAGES
+        </a>
+       </li>
+       <li>
+        <a href="http://www.moneycontrol.com/tv/">
+         MY TV
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="FR PT10" style="width:260px;">
+      <script>
+       function show_note(){ $('#note').css('display','block')}
+				function hide_note(){ $('#note').css('display','none')}
+      </script>
+      <div id="disp_ust" name="disp_ust">
+      </div>
+      <div class="fid_bx" id="note" onmouseout="hide_note()" onmouseover="show_note()">
+       <div class="whBx">
+        We would love your feedback on this and also suggestions on some additional features that could make it even better.
+       </div>
+      </div>
+      <div class="CL1">
+      </div>
+     </div>
+     <div class="CL1">
+     </div>
+    </div>
+    <div class="PT12">
+     <div class="FL PL10 PT5">
+      <a class="logoTr" href="/terminal/index_v1.php">
+      </a>
+     </div>
+     <!--ARTICLE START-->
+     <div class="FR w700">
+      <div class="FL w307">
+       <div class="slideTopNews">
+        <div class="title">
+         <div class="FL">
+          TOP NEWS »
+         </div>
+         <div class="FR">
+          <ul class="newsArr">
+           <li>
+            <a class="play" href="#" id="playTpNws">
+            </a>
+            <a class="pause" href="javascript:;" id="stopTpNws">
+            </a>
+           </li>
+           <li>
+            <a class="up" href="#" id="nxtNws">
+            </a>
+           </li>
+           <li>
+            <a class="down" href="#" id="prevNws">
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div class="CL">
+         </div>
+        </div>
+        <div class="PT7 PB7" id="tpNews">
+         <div class="cnt">
+          <div class="FL PR10">
+           <a href="http://www.moneycontrol.com/news/market-edge/market-week-ahead-as-earnings-kick-off-d-street-will-focusthese-top-10-factors_8755801.html" target="_blank">
+            <img alt="Market Week Ahead: As earnings kick off, D-Street will focus on these top 10 factors" height="46px" src="http://img.moneycontrol.co.in/news_image_files/2017/200x200/B/Bse_nse_sensex_dalal_street_bse1_200.jpg" width="45px"/>
+           </a>
+          </div>
+          <div class="FL linkThn">
+           <a href="http://www.moneycontrol.com/news/market-edge/market-week-ahead-as-earnings-kick-off-d-street-will-focusthese-top-10-factors_8755801.html" target="_blank">
+            Market Week Ahead: As earnings kick off, D-Street will focus on these top 10 factors
+           </a>
+          </div>
+          <div class="CL">
+          </div>
+         </div>
+         <div class="cnt">
+          <div class="FL PR10">
+           <a href="http://www.moneycontrol.com/news/market-edge/top-five-big-mistakes-to-avoid-when-markets-trade-near-life-time-highs_8754621.html" target="_blank">
+            <img alt="Top five big mistakes to avoid when markets trade near life-time highs" height="46px" src="http://img.moneycontrol.co.in/news_image_files/2017/200x200/B/BSE_market_Sensex_stock_new_200.jpg" width="45px"/>
+           </a>
+          </div>
+          <div class="FL linkThn">
+           <a href="http://www.moneycontrol.com/news/market-edge/top-five-big-mistakes-to-avoid-when-markets-trade-near-life-time-highs_8754621.html" target="_blank">
+            Top five big mistakes to avoid when markets trade near life-time highs
+           </a>
+          </div>
+          <div class="CL">
+          </div>
+         </div>
+         <div class="cnt">
+          <div class="FL PR10">
+           <a href="http://www.moneycontrol.com/news/business/sensex-cos-to-see-91-growthprofitsq4-fy3917-deutsche_8753581.html" target="_blank">
+            <img alt="Sensex cos to see 9.1% growth in profits in Q4 FY'17: Deutsche" height="46px" src="http://img.moneycontrol.co.in/news_image_files/2017/200x200/S/Sensex_Nse_Bse_Stock_market_dalal_street1_200.jpg" width="45px"/>
+           </a>
+          </div>
+          <div class="FL linkThn">
+           <a href="http://www.moneycontrol.com/news/business/sensex-cos-to-see-91-growthprofitsq4-fy3917-deutsche_8753581.html" target="_blank">
+            Sensex cos to see 9.1% growth in profits in Q4 FY'17: Deutsche
+           </a>
+          </div>
+          <div class="CL">
+          </div>
+         </div>
+         <div class="cnt">
+          <div class="FL PR10">
+           <a href="http://www.moneycontrol.com/news/economy/india-not-politically-fixing-gdp-numbers-arvind-subramanian_8754561.html" target="_blank">
+            <img alt="India not politically fixing GDP numbers: Arvind Subramanian" height="46px" src="http://img.moneycontrol.co.in/news_image_files/2017/200x200/A/Arvind_subramanian1_200.jpg" width="45px"/>
+           </a>
+          </div>
+          <div class="FL linkThn">
+           <a href="http://www.moneycontrol.com/news/economy/india-not-politically-fixing-gdp-numbers-arvind-subramanian_8754561.html" target="_blank">
+            India not politically fixing GDP numbers: Arvind Subramanian
+           </a>
+          </div>
+          <div class="CL">
+          </div>
+         </div>
+         <div class="cnt">
+          <div class="FL PR10">
+           <a href="http://www.moneycontrol.com/news/market-edge/tech-view-nifty-forms-39shooting-star39charts-can-initiate-short-positions_8752921.html" target="_blank">
+            <img alt="Tech View: Nifty forms 'Shooting Star' on charts; can initiate short positions" height="46px" src="http://img.moneycontrol.co.in/news_image_files/2017/200x200/B/BSE_Market_Sensex_Stock_Market_NSe_stocks_brokerages1_200.jpg" width="45px"/>
+           </a>
+          </div>
+          <div class="FL linkThn">
+           <a href="http://www.moneycontrol.com/news/market-edge/tech-view-nifty-forms-39shooting-star39charts-can-initiate-short-positions_8752921.html" target="_blank">
+            Tech View: Nifty forms 'Shooting Star' on charts; can initiate short positions
+           </a>
+          </div>
+          <div class="CL">
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="FR w349">
+       <div class="slideTopNews">
+        <div class="title">
+         <div class="FL">
+          MARKET NEWS »
+         </div>
+         <div class="FR">
+          <ul class="newsArr">
+           <li>
+            <a class="wh11 MR5" href="http://www.moneycontrol.com/news/marketnews-315.html" target="_blank">
+             View All
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </body>
+</html>
+<li class="apendUp">
+ <span>
+ </span>
+</li>
+<li class="apendDn">
+ <span style="display:block;">
+ </span>
+</li>
+<div class="CL">
+</div>
+<div class="PT7 PB7">
+ <div class="slideshow" id="slide1">
+  <div class="slide-wrapper">
+   <p class="mrtkNews">
+    13:28
+    <a href="http://www.moneycontrol.com/news/market-outlook/macro-data-q4-show-next-triggers-for-market_8756181.html" target="_blank">
+     Macro data, Q4 show next triggers for market
+    </a>
+   </p>
+   <p class="mrtkNews">
+    12:01
+    <a href="http://www.moneycontrol.com/news/market-edge/trade-setup-for-monday-top-10-things-you-should-know-before-opening-bell_8755901.html" target="_blank">
+     Trade Setup for Monday: Top 10 things you should k ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    19:34
+    <a href="http://www.moneycontrol.com/news/market-edge/market-week-ahead-as-earnings-kick-off-d-street-will-focusthese-top-10-factors_8755801.html" target="_blank">
+     Market Week Ahead: As earnings kick off, D-Street  ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    14:19
+    <a href="http://www.moneycontrol.com/news/stocks-views/buy-avenue-supermartdip-target-rs-850-capital-first-may-hit-rs-900-gujral_8755121.html" target="_blank">
+     Buy Avenue Supermart on dip, target Rs 850; Capita ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    14:16
+    <a href="http://www.moneycontrol.com/news/stocks-views/accumulate-eicher-motors-bajaj-auto-maruti-suzuki-manish-sonthalia_8755101.html" target="_blank">
+     Accumulate Eicher Motors, Bajaj Auto, Maruti Suzuk ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    14:12
+    <a href="http://www.moneycontrol.com/news/stocks-views/see-upsidelarsentoubro-15-cagr-growthprofits-manish-sonthalia_8755041.html" target="_blank">
+     See upside in Larsen and Toubro, 15% CAGR growth i ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    11:45
+    <a href="http://www.moneycontrol.com/news/buzzing-stocks/norges-bank-sells-567-lakh-shareslaurus-labs_8754781.html" target="_blank">
+     Norges Bank sells 5.67 lakh shares of Laurus Labs
+    </a>
+   </p>
+   <p class="mrtkNews">
+    11:40
+    <a href="http://www.moneycontrol.com/news/buzzing-stocks/franklin-templeton-investment-fund-buys-22-lakh-shareskajaria-ceramics﻿_8754761.html" target="_blank">
+     Franklin Templeton Investment Fund buys 22 lakh sh ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    11:36
+    <a href="http://www.moneycontrol.com/news/buzzing-stocks/polunin-emerging-markets-small-cap-fund-buys-37-lakh-sharesbgr-energy_8754741.html" target="_blank">
+     Polunin Emerging Markets Small Cap Fund buys 3.7 l ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    11:32
+    <a href="http://www.moneycontrol.com/news/buzzing-stocks/vignaharta-ceramics-llp-sells-44-lakh-sharesasian-granito﻿_8754721.html" target="_blank">
+     Vignaharta Ceramics LLP sells 4.4 lakh shares of A ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    11:27
+    <a href="http://www.moneycontrol.com/news/buzzing-stocks/nomura-singapore-sells-10-lakh-sharesansal-properties_8754681.html" target="_blank">
+     Nomura Singapore sells 10 lakh shares of Ansal Pro ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    11:23
+    <a href="http://www.moneycontrol.com/news/buzzing-stocks/prime-finvest-buys-3-lakh-sharesamrapali-fincap_8754661.html" target="_blank">
+     Prime Finvest buys 3 lakh shares of Amrapali Finca ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    10:53
+    <a href="http://www.moneycontrol.com/news/market-edge/top-five-big-mistakes-to-avoid-when-markets-trade-near-life-time-highs_8754621.html" target="_blank">
+     Top five big mistakes to avoid when markets trade  ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    08:37
+    <a href="http://www.moneycontrol.com/news/international-markets/wall-street-down-after-weak-jobs-fed-comments-syria-airstrikes_8754441.html" target="_blank">
+     Wall Street down after weak jobs, Fed comments, Sy ..
+    </a>
+   </p>
+   <p class="mrtkNews">
+    19:20
+    <a href="http://www.moneycontrol.com/news/business/am-naik-has-made-sure-thattransition-is-smooth-says-lt’s-sn-subrahmanayan_8753541.html" target="_blank">
+     AM Naik has made sure that the transition is smoot ..
+    </a>
+   </p>
+  </div>
+ </div>
+</div>
+<div class="CL">
+</div>
+<!--ARTICLE END-->
+<div class="CL">
+</div>
+<script>
+ if(readCookie('nnmc'))
+    {
+		var usernnmc = readCookie("nnmc");
+		usernnmc = usernnmc.replace("%40","@");	
+		usernnmc = usernnmc.substr(0,14);
+		usernnmc = usernnmc.replace('+',' ');
+
+        document.getElementById("disp_ust").innerHTML = '<div class="FR"><a  href="http://www.moneycontrol.com/mcplus/portfolio/logout.php?ref=http://www.moneycontrol.com/mcplus/portfolio/loginportfolio.php"><img width="58" height="23" src="http://img.moneycontrol.co.in/images/mctv/signout.gif"></a><a  href="http://www.moneycontrol.com/cdata/feedback.php?flag=term" onmouseout="hide_note()" onmouseover="show_note()" class="ML3" style="position:relative" target="_blank"><img src="http://img.moneycontrol.co.in/images/terminal/feedback_2jul12.gif" width="82" height="23" alt="" /></a></div><div class="FR PR5 PT5 gL12_1" name="disp_login" id="disp_login">Hi '+usernnmc+'</div>';	
+    }
+    else
+    {
+        document.getElementById("disp_ust").innerHTML = '<div class="FR"><a class="sign_mytv"  href="http://www.moneycontrol.com/india/bestportfoliomanager/stocks/mutualfunds/loginportfolio"></a><a  href="http://www.moneycontrol.com/cdata/feedback.php?flag=term" onmouseout="hide_note()" onmouseover="show_note()" class="ML3" style="position:relative" target="_blank"><img src="http://img.moneycontrol.co.in/images/terminal/feedback_2jul12.gif" width="82" height="23" alt="" /></a></div>';
+    }
+</script>
+<div id="mctv_02" name="mctv_02" style="position:absolute; margin:150px 0px 0px 350px; z-index:10">
+ <table bgcolor="#000" border="0" cellpadding="0" cellspacing="0" height="100px" width="400px">
+  <tr>
+   <td height="10px">
+   </td>
+  </tr>
+  <tr>
+   <td align="right" colspan="2" style="padding:0px 10px;">
+    <a class="clsbut" href="javascript:void(0);" onclick="javascript:close_pause_div('02');">
+     <b>
+      X
+     </b>
+    </a>
+   </td>
+  </tr>
+  <tr>
+   <td class="clsbut" colspan="2" style="padding:5px 10px; line-height:150%;">
+    Markets are closed now. For the best Live Streaming effect on stocks &amp; indices view the Terminal during market hours.
+   </td>
+  </tr>
+  <tr>
+   <td height="10px">
+   </td>
+  </tr>
+ </table>
+</div>
+<div id="mctv_00" name="mctv_00" style="display:none; position:absolute; margin:150px 0px 0px 350px; z-index:10">
+ <table bgcolor="#000" border="0" cellpadding="0" cellspacing="0" height="80px" width="347px">
+  <tr>
+   <td height="10px">
+   </td>
+  </tr>
+  <tr>
+   <td align="right" colspan="2" style="padding:0px 10px;">
+    <a class="clsbut" href="javascript:void(0);" onclick="javascript:close_pause_div('00');">
+     <b>
+      X
+     </b>
+    </a>
+   </td>
+  </tr>
+  <tr>
+   <td class="clsbut" colspan="2" style="padding:5px 10px; line-height:150%;">
+    Streaming has been paused.
+    <a class="bluefon" href="javascript:void(0);" onclick="javascript:close_pause_div('00');">
+     Please click here to continue.
+    </a>
+   </td>
+  </tr>
+  <tr>
+   <td height="10px">
+   </td>
+  </tr>
+ </table>
+</div>
+<div id="container">
+ <!--below div fixed menu-->
+ <div class="PRHTG">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+   <tr>
+    <td style="verticle-align:top" valign="top" width="142">
+     <!--lhs-->
+     <div class="FL" id="LNTrm">
+      <!--below div lhs fixed menu-->
+      <div id="dvSrcoll">
+       <h2>
+        <a href="javascript:;">
+         BSE
+        </a>
+       </h2>
+       <ul>
+        <li id="ind_4" style="white-space:nowrap;">
+         <a href="?index=4">
+          S&amp;P; BSE Sensex
+         </a>
+        </li>
+        <li id="ind_10" style="white-space:nowrap;">
+         <a href="?index=10">
+          S&amp;P; BSE Teck Index
+         </a>
+        </li>
+        <li id="ind_11" style="white-space:nowrap;">
+         <a href="?index=11">
+          S&amp;P; BSE PSU Index
+         </a>
+        </li>
+        <li id="ind_13" style="white-space:nowrap;">
+         <a href="?index=13">
+          S&amp;P; BSE Capital Goods
+         </a>
+        </li>
+        <li id="ind_14" style="white-space:nowrap;">
+         <a href="?index=14">
+          S&amp;P; BSE FMCG Index
+         </a>
+        </li>
+        <li id="ind_15" style="white-space:nowrap;">
+         <a href="?index=15">
+          S&amp;P; BSE Healthcare
+         </a>
+        </li>
+        <li id="ind_16" style="white-space:nowrap;">
+         <a href="?index=16">
+          S&amp;P; BSE CD Index
+         </a>
+        </li>
+        <li id="ind_17" style="white-space:nowrap;">
+         <a href="?index=17">
+          S&amp;P; BSE IT Index
+         </a>
+        </li>
+        <li id="ind_18" style="white-space:nowrap;">
+         <a href="?index=18">
+          S&amp;P; BSE Bankex
+         </a>
+        </li>
+        <li id="ind_20" style="white-space:nowrap;">
+         <a href="?index=20">
+          S&amp;P; BSE Auto
+         </a>
+        </li>
+        <li id="ind_21" style="white-space:nowrap;">
+         <a href="?index=21">
+          S&amp;P; BSE Metal
+         </a>
+        </li>
+        <li id="ind_22" style="white-space:nowrap;">
+         <a href="?index=22">
+          S&amp;P; BSE Oil &amp; Gas
+         </a>
+        </li>
+        <li id="ind_29" style="white-space:nowrap;">
+         <a href="?index=29">
+          S&amp;P; BSE Realty
+         </a>
+        </li>
+        <li id="ind_30" style="white-space:nowrap;">
+         <a href="?index=30">
+          S&amp;P; BSE Power Index
+         </a>
+        </li>
+        <li id="ind_33" style="white-space:nowrap;">
+         <a href="?index=33">
+          S&amp;P; BSE IPO
+         </a>
+        </li>
+       </ul>
+       <h2>
+        <a href="javascript:;">
+         NSE
+        </a>
+       </h2>
+       <ul>
+        <li id="ind_9" style="white-space:nowrap;">
+         <a href="?index=9">
+          CNX NIFTY
+         </a>
+        </li>
+        <li id="ind_31" style="white-space:nowrap;">
+         <a href="?index=31">
+          Nifty Midcap 50
+         </a>
+        </li>
+        <li id="ind_6" style="white-space:nowrap;">
+         <a href="?index=6">
+          CNX NIFTY JUNIOR
+         </a>
+        </li>
+        <li id="ind_19" style="white-space:nowrap;">
+         <a href="?index=19">
+          CNX IT
+         </a>
+        </li>
+        <li id="ind_23" style="white-space:nowrap;">
+         <a href="?index=23">
+          BANK Nifty
+         </a>
+        </li>
+        <li id="ind_34" style="white-space:nowrap;">
+         <a href="?index=34">
+          CNX Realty
+         </a>
+        </li>
+        <li id="ind_35" style="white-space:nowrap;">
+         <a href="?index=35">
+          CNX Infra
+         </a>
+        </li>
+        <li id="ind_38" style="white-space:nowrap;">
+         <a href="?index=38">
+          CNX Energy
+         </a>
+        </li>
+        <li id="ind_39" style="white-space:nowrap;">
+         <a href="?index=39">
+          CNX FMCG
+         </a>
+        </li>
+        <li id="ind_40" style="white-space:nowrap;">
+         <a href="?index=40">
+          CNX MNC
+         </a>
+        </li>
+        <li id="ind_41" style="white-space:nowrap;">
+         <a href="?index=41">
+          CNX Pharma
+         </a>
+        </li>
+        <li id="ind_42" style="white-space:nowrap;">
+         <a href="?index=42">
+          CNX PSE
+         </a>
+        </li>
+        <li id="ind_43" style="white-space:nowrap;">
+         <a href="?index=43">
+          CNX PSU Bank
+         </a>
+        </li>
+        <li id="ind_44" style="white-space:nowrap;">
+         <a href="?index=44">
+          CNX Service
+         </a>
+        </li>
+        <li id="ind_50" style="white-space:nowrap;">
+         <a href="?index=50">
+          CNX Media
+         </a>
+        </li>
+        <li id="ind_51" style="white-space:nowrap;">
+         <a href="?index=51">
+          CNX Metal
+         </a>
+        </li>
+        <li id="ind_52" style="white-space:nowrap;">
+         <a href="?index=52">
+          CNX Auto
+         </a>
+        </li>
+       </ul>
+       <script>
+        var objid=eval("document.getElementById('ind_9')");
+			objid.className='active';
+       </script>
+      </div>
+      <!--below div lhs fixed menu-->
+     </div>
+     <!--lhs-->
+    </td>
+    <td>
+     <!--rhs-->
+     <input id="h_index" name="h_index" type="hidden" value="9"/>
+     <div class="FL" id="rightCont">
+      <!--terminal band start-->
+      <style>
+       .termi_band{position:relative; border:1px solid #fee09f; background:#fff3b0; padding:7px 10px; box-shadow:1px 1px 2px #B6B6B6; border-radius:5px; color:#2a2929; font:bold 12px Arial, Helvetica, sans-serif;}
+				.cls_btn{position:absolute; right:-5px; top:-5px; width:22px; height:22px; background:url(http://img-d01.moneycontrol.co.in/images/terminal/cls_btn.png) 0 0 no-repeat; cursor:pointer;}
+				.i_ic{display:inline-block; vertical-align:middle; width:15px; height:15px; background:url(http://img-d02.moneycontrol.co.in/images/terminal/i_ic.png) 0 0 no-repeat;}
+				.bl_ter13{color:#0475bc; text-decoration:underline;}
+      </style>
+      <div class="termi_band MT5" style="display:none;">
+       <span class="cls_btn">
+       </span>
+       <span class="i_ic">
+       </span>
+       <a class="bl_ter13" href="http://terminal.moneycontrol.com/?utm_source=terminal&amp;utm_medium=link&amp;utm_campaign=MC_MessageBand" target="_blank" title="Click here for an exclusive preview">
+        Get Free access to Moneycontrol Terminal - A Live Personal Financial Workstation to rule the stock markets. Join Now!
+       </a>
+      </div>
+      <script type="text/javascript">
+       $(document).ready(function() {
+					if(readCookie('nnmc')) {
+						var cookieValue = getcookies('OLD_TERMINAML_BAND');
+						if(cookieValue == '') {
+							$('.termi_band').show();
+						}
+					}
+				});
+				$('.cls_btn').click(function(){
+					$('.termi_band').hide();
+
+					var c_name = 'OLD_TERMINAML_BAND';
+					var value = 1;
+					var exdays = 1;
+					var exdate = new Date();
+					exdate.setDate(exdate.getDate() + exdays);
+					var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString()) + "; path=/; domain=.moneycontrol.com; ";
+					document.cookie=c_name + "=" + c_value;
+				})
+      </script>
+      <!--terminal band end-->
+      <div class="">
+       <div class="FR PT15 PR5">
+        <div class="FR mrktSnap">
+         <span>
+          Market Snapshot
+         </span>
+        </div>
+        <div class="FR themeSlct PT2 MR15">
+         <a class="link" href="#">
+          Select Theme
+         </a>
+         <div class="contS" style="display: none;">
+          <ul>
+           <li>
+            <a class="wh" href="javaScript:;" id="theme_tag_wh" rel="http://stat.moneycontrol.co.in/mccss/terminal/wh_style.css?ep=0">
+             White
+            </a>
+           </li>
+           <li>
+            <a class="drg_act" href="javaScript:;" id="theme_tag_bl" rel="http://stat.moneycontrol.co.in/mccss/terminal/gr_style.css?ep=0">
+             Dark Grey
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+        <div class="CL">
+        </div>
+       </div>
+       <div class="CL">
+       </div>
+       <div id="mrktSpanshot">
+       </div>
+      </div>
+      <div class="PT12">
+       <div class="trHd">
+        <b>
+         CNX NIFTY
+        </b>
+        <span class="red_ind" id="Ter_indic">
+         9198.30
+        </span>
+        <span id="Ter_ind_img">
+         <img alt="" src="http://img.moneycontrol.co.in/images/mc2008/markets/dwn_arrowred.gif"/>
+        </span>
+        <span class="red" id="Ter_ind_chg">
+         -63.65
+        </span>
+        <span id="Ter_ind_per">
+         (-0.69%)
+        </span>
+       </div>
+       <table border="0" cellpadding="0" cellspacing="0" class="mcTrmnlTbl" width="100%">
+        <tr>
+         <th align="left" style="width:113px;">
+          COMPANY
+         </th>
+         <th>
+          LTP
+         </th>
+         <th>
+          %CHANGE
+         </th>
+         <th>
+          VOLUME
+         </th>
+         <th>
+          BUY PRICE
+         </th>
+         <th>
+          SELL PRICE
+         </th>
+         <th>
+          BUY QTY
+         </th>
+         <th>
+          SELL QTY
+         </th>
+        </tr>
+        <tr>
+         <td id="ACC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/cement-major/acc/ACC06" target="_blank">
+           <b>
+            ACC
+           </b>
+          </a>
+         </td>
+         <td class="red" id="ACC_ltp">
+          1,468.10
+         </td>
+         <td class="red" id="ACC_pergain">
+          -1.45
+         </td>
+         <td id="ACC_volume">
+          186840
+         </td>
+         <td id="ACC_buyprice">
+          1468.10
+         </td>
+         <td id="ACC_sellprice">
+          0.00
+         </td>
+         <td id="ACC_buyqty">
+          54
+         </td>
+         <td id="ACC_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="MPS_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/infrastructure-general/adaniportsspecialeconomiczone/MPS" target="_blank">
+           <b>
+            Adani Ports
+           </b>
+          </a>
+         </td>
+         <td class="red" id="MPS_ltp">
+          347.15
+         </td>
+         <td class="red" id="MPS_pergain">
+          -2.66
+         </td>
+         <td id="MPS_volume">
+          4918075
+         </td>
+         <td id="MPS_buyprice">
+          347.15
+         </td>
+         <td id="MPS_sellprice">
+          0.00
+         </td>
+         <td id="MPS_buyqty">
+          469
+         </td>
+         <td id="MPS_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="GAC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/cement-major/ambujacements/AC18" target="_blank">
+           <b>
+            Ambuja Cements
+           </b>
+          </a>
+         </td>
+         <td class="red" id="GAC_ltp">
+          242.45
+         </td>
+         <td class="red" id="GAC_pergain">
+          -0.37
+         </td>
+         <td id="GAC_volume">
+          2654510
+         </td>
+         <td id="GAC_buyprice">
+          242.45
+         </td>
+         <td id="GAC_sellprice">
+          0.00
+         </td>
+         <td id="GAC_buyqty">
+          829
+         </td>
+         <td id="GAC_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="API_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/paintsvarnishes/asianpaints/AP31" target="_blank">
+           <b>
+            Asian Paints
+           </b>
+          </a>
+         </td>
+         <td class="red" id="API_ltp">
+          1,082.95
+         </td>
+         <td class="red" id="API_pergain">
+          -0.36
+         </td>
+         <td id="API_volume">
+          837821
+         </td>
+         <td id="API_buyprice">
+          0.00
+         </td>
+         <td id="API_sellprice">
+          1082.95
+         </td>
+         <td id="API_buyqty">
+          0
+         </td>
+         <td id="API_sellqty">
+          3,187
+         </td>
+        </tr>
+        <tr>
+         <td id="AP_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/pharmaceuticals/aurobindopharma/AP" target="_blank">
+           <b>
+            Aurobindo Pharm
+           </b>
+          </a>
+         </td>
+         <td class="red" id="AP_ltp">
+          658.05
+         </td>
+         <td class="red" id="AP_pergain">
+          -1.85
+         </td>
+         <td id="AP_volume">
+          1607597
+         </td>
+         <td id="AP_buyprice">
+          0.00
+         </td>
+         <td id="AP_sellprice">
+          658.05
+         </td>
+         <td id="AP_buyqty">
+          0
+         </td>
+         <td id="AP_sellqty">
+          2,809
+         </td>
+        </tr>
+        <tr>
+         <td id="UTI10_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-privatesector/axisbank/AB16" target="_blank">
+           <b>
+            Axis Bank
+           </b>
+          </a>
+         </td>
+         <td class="red" id="UTI10_ltp">
+          504.20
+         </td>
+         <td class="red" id="UTI10_pergain">
+          -0.88
+         </td>
+         <td id="UTI10_volume">
+          5019268
+         </td>
+         <td id="UTI10_buyprice">
+          0.00
+         </td>
+         <td id="UTI10_sellprice">
+          504.20
+         </td>
+         <td id="UTI10_buyqty">
+          0
+         </td>
+         <td id="UTI10_sellqty">
+          1,296
+         </td>
+        </tr>
+        <tr>
+         <td id="BA06_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/auto-23wheelers/bajajauto/BA10" target="_blank">
+           <b>
+            Bajaj Auto
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="BA06_ltp">
+          2,830.45
+         </td>
+         <td class="grn" id="BA06_pergain">
+          0.86
+         </td>
+         <td id="BA06_volume">
+          413910
+         </td>
+         <td id="BA06_buyprice">
+          0.00
+         </td>
+         <td id="BA06_sellprice">
+          2830.45
+         </td>
+         <td id="BA06_buyqty">
+          0
+         </td>
+         <td id="BA06_sellqty">
+          314
+         </td>
+        </tr>
+        <tr>
+         <td id="BOB_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-publicsector/bankofbaroda/BOB" target="_blank">
+           <b>
+            Bank of Baroda
+           </b>
+          </a>
+         </td>
+         <td class="red" id="BOB_ltp">
+          168.65
+         </td>
+         <td class="red" id="BOB_pergain">
+          -3.57
+         </td>
+         <td id="BOB_volume">
+          6958075
+         </td>
+         <td id="BOB_buyprice">
+          168.65
+         </td>
+         <td id="BOB_sellprice">
+          0.00
+         </td>
+         <td id="BOB_buyqty">
+          155
+         </td>
+         <td id="BOB_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="BTV_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/telecommunications-service/bhartiairtel/BA08" target="_blank">
+           <b>
+            Bharti Airtel
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="BTV_ltp">
+          344.70
+         </td>
+         <td class="grn" id="BTV_pergain">
+          0.85
+         </td>
+         <td id="BTV_volume">
+          5720441
+         </td>
+         <td id="BTV_buyprice">
+          0.00
+         </td>
+         <td id="BTV_sellprice">
+          344.70
+         </td>
+         <td id="BTV_buyqty">
+          0
+         </td>
+         <td id="BTV_sellqty">
+          45
+         </td>
+        </tr>
+        <tr>
+         <td id="BI26_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/telecommunications-equipment/bhartiinfratel/BI14" target="_blank">
+           <b>
+            Bharti Infratel
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="BI26_ltp">
+          347.60
+         </td>
+         <td class="grn" id="BI26_pergain">
+          2.49
+         </td>
+         <td id="BI26_volume">
+          2517248
+         </td>
+         <td id="BI26_buyprice">
+          0.00
+         </td>
+         <td id="BI26_sellprice">
+          347.60
+         </td>
+         <td id="BI26_buyqty">
+          0
+         </td>
+         <td id="BI26_sellqty">
+          2,314
+         </td>
+        </tr>
+        <tr>
+         <td id="MIC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/autoancillaries/bosch/B05" target="_blank">
+           <b>
+            Bosch
+           </b>
+          </a>
+         </td>
+         <td class="red" id="MIC_ltp">
+          22,826.80
+         </td>
+         <td class="red" id="MIC_pergain">
+          -0.31
+         </td>
+         <td id="MIC_volume">
+          25149
+         </td>
+         <td id="MIC_buyprice">
+          22826.80
+         </td>
+         <td id="MIC_sellprice">
+          0.00
+         </td>
+         <td id="MIC_buyqty">
+          2
+         </td>
+         <td id="MIC_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="BPC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/refineries/bharatpetroleumcorporation/BPC" target="_blank">
+           <b>
+            BPCL
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="BPC_ltp">
+          675.35
+         </td>
+         <td class="grn" id="BPC_pergain">
+          4.51
+         </td>
+         <td id="BPC_volume">
+          5260351
+         </td>
+         <td id="BPC_buyprice">
+          675.35
+         </td>
+         <td id="BPC_sellprice">
+          0.00
+         </td>
+         <td id="BPC_buyqty">
+          432
+         </td>
+         <td id="BPC_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="C_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/pharmaceuticals/cipla/C" target="_blank">
+           <b>
+            Cipla
+           </b>
+          </a>
+         </td>
+         <td class="red" id="C_ltp">
+          590.00
+         </td>
+         <td class="red" id="C_pergain">
+          -0.05
+         </td>
+         <td id="C_volume">
+          1958876
+         </td>
+         <td id="C_buyprice">
+          0.00
+         </td>
+         <td id="C_sellprice">
+          590.00
+         </td>
+         <td id="C_buyqty">
+          0
+         </td>
+         <td id="C_sellqty">
+          51
+         </td>
+        </tr>
+        <tr>
+         <td id="CI29_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/miningminerals/coalindia/CI11" target="_blank">
+           <b>
+            Coal India
+           </b>
+          </a>
+         </td>
+         <td class="red" id="CI29_ltp">
+          283.90
+         </td>
+         <td class="red" id="CI29_pergain">
+          -0.87
+         </td>
+         <td id="CI29_volume">
+          11862249
+         </td>
+         <td id="CI29_buyprice">
+          283.90
+         </td>
+         <td id="CI29_sellprice">
+          0.00
+         </td>
+         <td id="CI29_buyqty">
+          3,051
+         </td>
+         <td id="CI29_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="DRL_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/pharmaceuticals/drreddyslaboratories/DRL" target="_blank">
+           <b>
+            Dr Reddys Labs
+           </b>
+          </a>
+         </td>
+         <td class="red" id="DRL_ltp">
+          2,661.35
+         </td>
+         <td class="red" id="DRL_pergain">
+          -2.09
+         </td>
+         <td id="DRL_volume">
+          322812
+         </td>
+         <td id="DRL_buyprice">
+          0.00
+         </td>
+         <td id="DRL_sellprice">
+          2661.35
+         </td>
+         <td id="DRL_buyqty">
+          0
+         </td>
+         <td id="DRL_sellqty">
+          5,478
+         </td>
+        </tr>
+        <tr>
+         <td id="EM_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/auto-lcvshcvs/eichermotors/EM" target="_blank">
+           <b>
+            Eicher Motors
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="EM_ltp">
+          25,806.85
+         </td>
+         <td class="grn" id="EM_pergain">
+          0.82
+         </td>
+         <td id="EM_volume">
+          37333
+         </td>
+         <td id="EM_buyprice">
+          0.00
+         </td>
+         <td id="EM_sellprice">
+          25806.85
+         </td>
+         <td id="EM_buyqty">
+          0
+         </td>
+         <td id="EM_sellqty">
+          62
+         </td>
+        </tr>
+        <tr>
+         <td id="GAI_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/oildrillingandexploration/gailindia/GAI" target="_blank">
+           <b>
+            GAIL
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="GAI_ltp">
+          386.65
+         </td>
+         <td class="grn" id="GAI_pergain">
+          0.00
+         </td>
+         <td id="GAI_volume">
+          2981555
+         </td>
+         <td id="GAI_buyprice">
+          386.65
+         </td>
+         <td id="GAI_sellprice">
+          0.00
+         </td>
+         <td id="GAI_buyqty">
+          1,617
+         </td>
+         <td id="GAI_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="GI01_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/diversified/grasimindustries/GI01" target="_blank">
+           <b>
+            Grasim
+           </b>
+          </a>
+         </td>
+         <td class="red" id="GI01_ltp">
+          1,057.10
+         </td>
+         <td class="red" id="GI01_pergain">
+          -1.12
+         </td>
+         <td id="GI01_volume">
+          1483436
+         </td>
+         <td id="GI01_buyprice">
+          1057.10
+         </td>
+         <td id="GI01_sellprice">
+          0.00
+         </td>
+         <td id="GI01_buyqty">
+          171
+         </td>
+         <td id="GI01_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="HCL02_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/computers-software/hcltechnologies/HCL02" target="_blank">
+           <b>
+            HCL Tech
+           </b>
+          </a>
+         </td>
+         <td class="red" id="HCL02_ltp">
+          849.30
+         </td>
+         <td class="red" id="HCL02_pergain">
+          -0.49
+         </td>
+         <td id="HCL02_volume">
+          1029887
+         </td>
+         <td id="HCL02_buyprice">
+          849.30
+         </td>
+         <td id="HCL02_sellprice">
+          0.00
+         </td>
+         <td id="HCL02_buyqty">
+          75
+         </td>
+         <td id="HCL02_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="HDF_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/finance-housing/housingdevelopmentfinancecorporation/HDF" target="_blank">
+           <b>
+            HDFC
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="HDF_ltp">
+          1,484.75
+         </td>
+         <td class="grn" id="HDF_pergain">
+          0.15
+         </td>
+         <td id="HDF_volume">
+          2366116
+         </td>
+         <td id="HDF_buyprice">
+          0.00
+         </td>
+         <td id="HDF_sellprice">
+          1484.75
+         </td>
+         <td id="HDF_buyqty">
+          0
+         </td>
+         <td id="HDF_sellqty">
+          1,219
+         </td>
+        </tr>
+        <tr>
+         <td id="HDF01_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-privatesector/hdfcbank/HDF01" target="_blank">
+           <b>
+            HDFC Bank
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="HDF01_ltp">
+          1,438.85
+         </td>
+         <td class="grn" id="HDF01_pergain">
+          0.02
+         </td>
+         <td id="HDF01_volume">
+          1162090
+         </td>
+         <td id="HDF01_buyprice">
+          1438.85
+         </td>
+         <td id="HDF01_sellprice">
+          0.00
+         </td>
+         <td id="HDF01_buyqty">
+          1,129
+         </td>
+         <td id="HDF01_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="HHM_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/auto-23wheelers/heromotocorp/HHM" target="_blank">
+           <b>
+            Hero Motocorp
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="HHM_ltp">
+          3,215.30
+         </td>
+         <td class="grn" id="HHM_pergain">
+          0.28
+         </td>
+         <td id="HHM_volume">
+          332878
+         </td>
+         <td id="HHM_buyprice">
+          0.00
+         </td>
+         <td id="HHM_sellprice">
+          0.00
+         </td>
+         <td id="HHM_buyqty">
+          0
+         </td>
+         <td id="HHM_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="H_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/aluminium/hindalcoindustries/HI" target="_blank">
+           <b>
+            Hindalco
+           </b>
+          </a>
+         </td>
+         <td class="red" id="H_ltp">
+          193.50
+         </td>
+         <td class="red" id="H_pergain">
+          -0.23
+         </td>
+         <td id="H_volume">
+          14576273
+         </td>
+         <td id="H_buyprice">
+          0.00
+         </td>
+         <td id="H_sellprice">
+          193.50
+         </td>
+         <td id="H_buyqty">
+          0
+         </td>
+         <td id="H_sellqty">
+          1,869
+         </td>
+        </tr>
+        <tr>
+         <td id="HL_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/personalcare/hindustanunilever/HU" target="_blank">
+           <b>
+            HUL
+           </b>
+          </a>
+         </td>
+         <td class="red" id="HL_ltp">
+          924.50
+         </td>
+         <td class="red" id="HL_pergain">
+          -1.09
+         </td>
+         <td id="HL_volume">
+          770107
+         </td>
+         <td id="HL_buyprice">
+          0.00
+         </td>
+         <td id="HL_sellprice">
+          924.50
+         </td>
+         <td id="HL_buyqty">
+          0
+         </td>
+         <td id="HL_sellqty">
+          1,367
+         </td>
+        </tr>
+        <tr>
+         <td id="ICI02_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-privatesector/icicibank/ICI02" target="_blank">
+           <b>
+            ICICI Bank
+           </b>
+          </a>
+         </td>
+         <td class="red" id="ICI02_ltp">
+          277.35
+         </td>
+         <td class="red" id="ICI02_pergain">
+          -1.25
+         </td>
+         <td id="ICI02_volume">
+          17267310
+         </td>
+         <td id="ICI02_buyprice">
+          0.00
+         </td>
+         <td id="ICI02_sellprice">
+          277.35
+         </td>
+         <td id="ICI02_buyqty">
+          0
+         </td>
+         <td id="ICI02_sellqty">
+          164
+         </td>
+        </tr>
+        <tr>
+         <td id="IHF01_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/finance-housing/indiabullshousingfinance/IHF01" target="_blank">
+           <b>
+            Indiabulls Hsg
+           </b>
+          </a>
+         </td>
+         <td class="red" id="IHF01_ltp">
+          955.85
+         </td>
+         <td class="red" id="IHF01_pergain">
+          -2.16
+         </td>
+         <td id="IHF01_volume">
+          2689689
+         </td>
+         <td id="IHF01_buyprice">
+          0.00
+         </td>
+         <td id="IHF01_sellprice">
+          955.85
+         </td>
+         <td id="IHF01_buyqty">
+          0
+         </td>
+         <td id="IHF01_sellqty">
+          127
+         </td>
+        </tr>
+        <tr>
+         <td id="IIB_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-privatesector/indusindbank/IIB" target="_blank">
+           <b>
+            IndusInd Bank
+           </b>
+          </a>
+         </td>
+         <td class="red" id="IIB_ltp">
+          1,412.20
+         </td>
+         <td class="red" id="IIB_pergain">
+          -0.66
+         </td>
+         <td id="IIB_volume">
+          562443
+         </td>
+         <td id="IIB_buyprice">
+          1412.20
+         </td>
+         <td id="IIB_sellprice">
+          0.00
+         </td>
+         <td id="IIB_buyqty">
+          209
+         </td>
+         <td id="IIB_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="IT_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/computers-software/infosys/IT" target="_blank">
+           <b>
+            Infosys
+           </b>
+          </a>
+         </td>
+         <td class="red" id="IT_ltp">
+          981.55
+         </td>
+         <td class="red" id="IT_pergain">
+          -1.81
+         </td>
+         <td id="IT_volume">
+          3202154
+         </td>
+         <td id="IT_buyprice">
+          0.00
+         </td>
+         <td id="IT_sellprice">
+          981.55
+         </td>
+         <td id="IT_buyqty">
+          0
+         </td>
+         <td id="IT_sellqty">
+          703
+         </td>
+        </tr>
+        <tr>
+         <td id="IOC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/refineries/indianoilcorporation/IOC" target="_blank">
+           <b>
+            IOC
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="IOC_ltp">
+          397.35
+         </td>
+         <td class="grn" id="IOC_pergain">
+          3.01
+         </td>
+         <td id="IOC_volume">
+          7427286
+         </td>
+         <td id="IOC_buyprice">
+          0.00
+         </td>
+         <td id="IOC_sellprice">
+          397.35
+         </td>
+         <td id="IOC_buyqty">
+          0
+         </td>
+         <td id="IOC_sellqty">
+          175
+         </td>
+        </tr>
+        <tr>
+         <td id="ITC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/cigarettes/itc/ITC" target="_blank">
+           <b>
+            ITC
+           </b>
+          </a>
+         </td>
+         <td class="red" id="ITC_ltp">
+          272.65
+         </td>
+         <td class="red" id="ITC_pergain">
+          -0.53
+         </td>
+         <td id="ITC_volume">
+          9128592
+         </td>
+         <td id="ITC_buyprice">
+          0.00
+         </td>
+         <td id="ITC_sellprice">
+          272.65
+         </td>
+         <td id="ITC_buyqty">
+          0
+         </td>
+         <td id="ITC_sellqty">
+          960
+         </td>
+        </tr>
+        <tr>
+         <td id="KMF_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-privatesector/kotakmahindrabank/KMB" target="_blank">
+           <b>
+            Kotak Mahindra
+           </b>
+          </a>
+         </td>
+         <td class="red" id="KMF_ltp">
+          873.10
+         </td>
+         <td class="red" id="KMF_pergain">
+          -2.38
+         </td>
+         <td id="KMF_volume">
+          1612677
+         </td>
+         <td id="KMF_buyprice">
+          0.00
+         </td>
+         <td id="KMF_sellprice">
+          873.10
+         </td>
+         <td id="KMF_buyqty">
+          0
+         </td>
+         <td id="KMF_sellqty">
+          1,267
+         </td>
+        </tr>
+        <tr>
+         <td id="LT_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/infrastructure-general/larsentoubro/LT" target="_blank">
+           <b>
+            Larsen
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="LT_ltp">
+          1,685.50
+         </td>
+         <td class="grn" id="LT_pergain">
+          0.14
+         </td>
+         <td id="LT_volume">
+          2731093
+         </td>
+         <td id="LT_buyprice">
+          1685.50
+         </td>
+         <td id="LT_sellprice">
+          0.00
+         </td>
+         <td id="LT_buyqty">
+          1,951
+         </td>
+         <td id="LT_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="LC03_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/pharmaceuticals/lupin/L" target="_blank">
+           <b>
+            Lupin
+           </b>
+          </a>
+         </td>
+         <td class="red" id="LC03_ltp">
+          1,410.05
+         </td>
+         <td class="red" id="LC03_pergain">
+          -2.65
+         </td>
+         <td id="LC03_volume">
+          1036712
+         </td>
+         <td id="LC03_buyprice">
+          1410.05
+         </td>
+         <td id="LC03_sellprice">
+          0.00
+         </td>
+         <td id="LC03_buyqty">
+          41
+         </td>
+         <td id="LC03_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="MM_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/auto-carsjeeps/mahindramahindra/MM" target="_blank">
+           <b>
+            M&amp;M;
+           </b>
+          </a>
+         </td>
+         <td class="red" id="MM_ltp">
+          1,275.55
+         </td>
+         <td class="red" id="MM_pergain">
+          -1.04
+         </td>
+         <td id="MM_volume">
+          855291
+         </td>
+         <td id="MM_buyprice">
+          1275.55
+         </td>
+         <td id="MM_sellprice">
+          0.00
+         </td>
+         <td id="MM_buyqty">
+          1,067
+         </td>
+         <td id="MM_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="MU01_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/auto-carsjeeps/marutisuzukiindia/MS24" target="_blank">
+           <b>
+            Maruti Suzuki
+           </b>
+          </a>
+         </td>
+         <td class="red" id="MU01_ltp">
+          6,259.35
+         </td>
+         <td class="red" id="MU01_pergain">
+          -0.51
+         </td>
+         <td id="MU01_volume">
+          467235
+         </td>
+         <td id="MU01_buyprice">
+          6259.35
+         </td>
+         <td id="MU01_sellprice">
+          0.00
+         </td>
+         <td id="MU01_buyqty">
+          66
+         </td>
+         <td id="MU01_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="NTP_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/power-generationdistribution/ntpc/NTP" target="_blank">
+           <b>
+            NTPC
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="NTP_ltp">
+          168.25
+         </td>
+         <td class="grn" id="NTP_pergain">
+          0.33
+         </td>
+         <td id="NTP_volume">
+          6171069
+         </td>
+         <td id="NTP_buyprice">
+          168.25
+         </td>
+         <td id="NTP_sellprice">
+          0.00
+         </td>
+         <td id="NTP_buyqty">
+          7,792
+         </td>
+         <td id="NTP_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="ONG_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/oildrillingandexploration/oilnaturalgascorporation/ONG" target="_blank">
+           <b>
+            ONGC
+           </b>
+          </a>
+         </td>
+         <td class="red" id="ONG_ltp">
+          186.40
+         </td>
+         <td class="red" id="ONG_pergain">
+          -0.61
+         </td>
+         <td id="ONG_volume">
+          8049423
+         </td>
+         <td id="ONG_buyprice">
+          186.40
+         </td>
+         <td id="ONG_sellprice">
+          0.00
+         </td>
+         <td id="ONG_buyqty">
+          2,307
+         </td>
+         <td id="ONG_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="PGC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/power-generationdistribution/powergridcorporationindia/PGC" target="_blank">
+           <b>
+            Power Grid Corp
+           </b>
+          </a>
+         </td>
+         <td class="red" id="PGC_ltp">
+          195.00
+         </td>
+         <td class="red" id="PGC_pergain">
+          -1.12
+         </td>
+         <td id="PGC_volume">
+          5178132
+         </td>
+         <td id="PGC_buyprice">
+          0.00
+         </td>
+         <td id="PGC_sellprice">
+          195.00
+         </td>
+         <td id="PGC_buyqty">
+          0
+         </td>
+         <td id="PGC_sellqty">
+          3,491
+         </td>
+        </tr>
+        <tr>
+         <td id="RI_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/refineries/relianceindustries/RI" target="_blank">
+           <b>
+            Reliance
+           </b>
+          </a>
+         </td>
+         <td class="red" id="RI_ltp">
+          1,406.60
+         </td>
+         <td class="red" id="RI_pergain">
+          -2.22
+         </td>
+         <td id="RI_volume">
+          7286151
+         </td>
+         <td id="RI_buyprice">
+          1406.60
+         </td>
+         <td id="RI_sellprice">
+          0.00
+         </td>
+         <td id="RI_buyqty">
+          3,154
+         </td>
+         <td id="RI_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="SBI_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-publicsector/statebankindia/SBI" target="_blank">
+           <b>
+            SBI
+           </b>
+          </a>
+         </td>
+         <td class="red" id="SBI_ltp">
+          289.45
+         </td>
+         <td class="red" id="SBI_pergain">
+          -1.16
+         </td>
+         <td id="SBI_volume">
+          10765502
+         </td>
+         <td id="SBI_buyprice">
+          0.00
+         </td>
+         <td id="SBI_sellprice">
+          289.45
+         </td>
+         <td id="SBI_buyqty">
+          0
+         </td>
+         <td id="SBI_sellqty">
+          80,966
+         </td>
+        </tr>
+        <tr>
+         <td id="SPI_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/pharmaceuticals/sunpharmaceuticalindustries/SPI" target="_blank">
+           <b>
+            Sun Pharma
+           </b>
+          </a>
+         </td>
+         <td class="red" id="SPI_ltp">
+          665.95
+         </td>
+         <td class="red" id="SPI_pergain">
+          -3.05
+         </td>
+         <td id="SPI_volume">
+          6076717
+         </td>
+         <td id="SPI_buyprice">
+          0.00
+         </td>
+         <td id="SPI_sellprice">
+          665.95
+         </td>
+         <td id="SPI_buyqty">
+          0
+         </td>
+         <td id="SPI_sellqty">
+          2,369
+         </td>
+        </tr>
+        <tr>
+         <td id="TEL_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/auto-lcvshcvs/tatamotors/TM03" target="_blank">
+           <b>
+            Tata Motors
+           </b>
+          </a>
+         </td>
+         <td class="red" id="TEL_ltp">
+          468.30
+         </td>
+         <td class="red" id="TEL_pergain">
+          -1.04
+         </td>
+         <td id="TEL_volume">
+          8089461
+         </td>
+         <td id="TEL_buyprice">
+          0.00
+         </td>
+         <td id="TEL_sellprice">
+          468.30
+         </td>
+         <td id="TEL_buyqty">
+          0
+         </td>
+         <td id="TEL_sellqty">
+          2,520
+         </td>
+        </tr>
+        <tr>
+         <td id="TMD_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/auto-lcvshcvs/tatamotors(dvr)/TMD" target="_blank">
+           <b>
+            Tata Motors (D)
+           </b>
+          </a>
+         </td>
+         <td class="red" id="TMD_ltp">
+          284.35
+         </td>
+         <td class="red" id="TMD_pergain">
+          -0.73
+         </td>
+         <td id="TMD_volume">
+          2330807
+         </td>
+         <td id="TMD_buyprice">
+          0.00
+         </td>
+         <td id="TMD_sellprice">
+          284.35
+         </td>
+         <td id="TMD_buyqty">
+          0
+         </td>
+         <td id="TMD_sellqty">
+          14,674
+         </td>
+        </tr>
+        <tr>
+         <td id="TPC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/power-generationdistribution/tatapowercompany/TPC" target="_blank">
+           <b>
+            Tata Power
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="TPC_ltp">
+          87.50
+         </td>
+         <td class="grn" id="TPC_pergain">
+          0.23
+         </td>
+         <td id="TPC_volume">
+          5373912
+         </td>
+         <td id="TPC_buyprice">
+          0.00
+         </td>
+         <td id="TPC_sellprice">
+          87.50
+         </td>
+         <td id="TPC_buyqty">
+          0
+         </td>
+         <td id="TPC_sellqty">
+          2,555
+         </td>
+        </tr>
+        <tr>
+         <td id="TIS_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/steel-large/tatasteel/TIS" target="_blank">
+           <b>
+            Tata Steel
+           </b>
+          </a>
+         </td>
+         <td class="red" id="TIS_ltp">
+          493.20
+         </td>
+         <td class="red" id="TIS_pergain">
+          -1.68
+         </td>
+         <td id="TIS_volume">
+          5379941
+         </td>
+         <td id="TIS_buyprice">
+          0.00
+         </td>
+         <td id="TIS_sellprice">
+          493.20
+         </td>
+         <td id="TIS_buyqty">
+          0
+         </td>
+         <td id="TIS_sellqty">
+          5,611
+         </td>
+        </tr>
+        <tr>
+         <td id="TCS_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/computers-software/tataconsultancyservices/TCS" target="_blank">
+           <b>
+            TCS
+           </b>
+          </a>
+         </td>
+         <td class="grn" id="TCS_ltp">
+          2,429.05
+         </td>
+         <td class="grn" id="TCS_pergain">
+          1.21
+         </td>
+         <td id="TCS_volume">
+          1138506
+         </td>
+         <td id="TCS_buyprice">
+          0.00
+         </td>
+         <td id="TCS_sellprice">
+          2429.05
+         </td>
+         <td id="TCS_buyqty">
+          0
+         </td>
+         <td id="TCS_sellqty">
+          329
+         </td>
+        </tr>
+        <tr>
+         <td id="TM4_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/computers-software/techmahindra/TM4" target="_blank">
+           <b>
+            Tech Mahindra
+           </b>
+          </a>
+         </td>
+         <td class="red" id="TM4_ltp">
+          443.20
+         </td>
+         <td class="red" id="TM4_pergain">
+          -0.83
+         </td>
+         <td id="TM4_volume">
+          3124791
+         </td>
+         <td id="TM4_buyprice">
+          0.00
+         </td>
+         <td id="TM4_sellprice">
+          443.20
+         </td>
+         <td id="TM4_buyqty">
+          0
+         </td>
+         <td id="TM4_sellqty">
+          3,936
+         </td>
+        </tr>
+        <tr>
+         <td id="UTC_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/cement-major/ultratechcement/UTC01" target="_blank">
+           <b>
+            UltraTechCement
+           </b>
+          </a>
+         </td>
+         <td class="red" id="UTC_ltp">
+          4,081.00
+         </td>
+         <td class="red" id="UTC_pergain">
+          -0.73
+         </td>
+         <td id="UTC_volume">
+          124319
+         </td>
+         <td id="UTC_buyprice">
+          0.00
+         </td>
+         <td id="UTC_sellprice">
+          4081.00
+         </td>
+         <td id="UTC_buyqty">
+          0
+         </td>
+         <td id="UTC_sellqty">
+          195
+         </td>
+        </tr>
+        <tr>
+         <td id="W_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/computers-software/wipro/W" target="_blank">
+           <b>
+            Wipro
+           </b>
+          </a>
+         </td>
+         <td class="red" id="W_ltp">
+          511.90
+         </td>
+         <td class="red" id="W_pergain">
+          -0.54
+         </td>
+         <td id="W_volume">
+          2286880
+         </td>
+         <td id="W_buyprice">
+          511.90
+         </td>
+         <td id="W_sellprice">
+          0.00
+         </td>
+         <td id="W_buyqty">
+          2,840
+         </td>
+         <td id="W_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="YB_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/banks-privatesector/yesbank/YB" target="_blank">
+           <b>
+            Yes Bank
+           </b>
+          </a>
+         </td>
+         <td class="red" id="YB_ltp">
+          1,556.55
+         </td>
+         <td class="red" id="YB_pergain">
+          -0.52
+         </td>
+         <td id="YB_volume">
+          1552648
+         </td>
+         <td id="YB_buyprice">
+          1556.55
+         </td>
+         <td id="YB_sellprice">
+          0.00
+         </td>
+         <td id="YB_buyqty">
+          100
+         </td>
+         <td id="YB_sellqty">
+          0
+         </td>
+        </tr>
+        <tr>
+         <td id="ZT_comp" nowrap="nowrap" style="width:113px; text-align:left">
+          <a class="bl_12" href="/india/stockpricequote/mediaentertainment/zeeentertainmententerprises/ZEE" target="_blank">
+           <b>
+            Zee Entertain
+           </b>
+          </a>
+         </td>
+         <td class="red" id="ZT_ltp">
+          547.60
+         </td>
+         <td class="red" id="ZT_pergain">
+          -1.05
+         </td>
+         <td id="ZT_volume">
+          1005806
+         </td>
+         <td id="ZT_buyprice">
+          0.00
+         </td>
+         <td id="ZT_sellprice">
+          547.60
+         </td>
+         <td id="ZT_buyqty">
+          0
+         </td>
+         <td id="ZT_sellqty">
+          36
+         </td>
+        </tr>
+       </table>
+      </div>
+     </div>
+     <!--rhs-->
+    </td>
+   </tr>
+  </table>
+ </div>
+ <!--below div fixed menu-->
+ <div class="CL">
+ </div>
+ <div class="PT20 copy" id="stSrcl">
+  <center>
+   MC Terminal is designed to run on modern hardware with a minimum of 1 GB RAM.
+  </center>
+ </div>
+ <div class="CL">
+ </div>
+ <div class="followMCF">
+  <h2 class="wh_18 FL PT3">
+   Follow moneycontrol.com
+  </h2>
+  <a class="flFacebook" href="http://www.facebook.com/moneycontrolFB" target="_blank">
+   Facebook
+  </a>
+  <a class="flTwitter" href="http://twitter.com/moneycontrolcom" target="_blank">
+   Twitter
+  </a>
+  <a class="flRss" href="http://www.moneycontrol.com/india/newsarticle/rssfeeds/rssfeeds.php" target="_blank">
+   RSS
+  </a>
+  <a class="flWap" href=" http://www.moneycontrol.com/markets_on_mobile/wap-sms.php" target="_blank">
+   Wap SMS
+  </a>
+  <a class="flsms" href="http://www.moneycontrol.com/stock_track/" target="_blank">
+   SMS
+  </a>
+  <a class="flalert" href="http://www.moneycontrol.com/alerts/" target="_blank">
+   Alert
+  </a>
+  <a class="flipad" href="http://itunes.apple.com/app/moneycontrol-for-ipad-financial/id474708356?mt=8" target="_blank">
+   iPad
+  </a>
+  <a class="fliphone" href="http://itunes.apple.com/app/moneycontrols-markets-on-mobile/id408654600?mt=8" target="_blank">
+   iPhone
+  </a>
+  <a class="flblackberry" href="http://www.moneycontrol.com/apps/BlackBerry" target="_blank">
+   Blackberry
+  </a>
+  <a class="flovi" href="http://www.moneycontrol.com/apps/Nokia" target="_blank">
+   OVI
+  </a>
+  <a class="flAndroid" href="http://www.moneycontrol.com/apps/Android" target="_blank">
+   Android
+  </a>
+  <a class="flWindow" href="http://www.windowsphone.com/en-IN/apps/aadeacdd-9c18-41d8-aee8-e5f3b8f76f5d" target="_blank">
+   Window
+  </a>
+ </div>
+ <div class="CL">
+ </div>
+ <div id="footer">
+  <div class="PT5 copy">
+   Copyright © e-Eighteen.com Ltd. All rights reserved. Reproduction of news articles, photos, videos or any other content in whole or in part in any form or medium without express written permission of moneycontrol.com is prohibited.
+  </div>
+ </div>
+</div>
+<table border="0" cellpadding="0" cellspacing="0">
+ <tr>
+  <td>
+   <link href="http://www.moneycontrol.com/rss/latestnews.xml" rel="alternate" title="MoneyControl.com News" type="application/rss+xml"/>
+  </td>
+ </tr>
+</table>
+<script type="text/javascript">
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-156703-1', 'moneycontrol.com');
+  ga('send', 'pageview');
+
+function urchinTracker(pa_str) {ga(['_trackPageview', ''+pa_str+'']);}
+function GAEventTracker(category,action,opt_label) {ga('send', 'event', ''+category+'', ''+action+'', ''+opt_label+'');}
+</script>
+<!-- Begin comScore Tag -->
+<script>
+ var _comscore = _comscore || [];
+  _comscore.push({ c1: "2", c2: "6683813" });
+  (function() {
+    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+    el.parentNode.insertBefore(s, el);
+  })();
+</script>
+<noscript>
+ <img src="http://b.scorecardresearch.com/p?c1=2&amp;c2=6683813&amp;cv=2.0&amp;cj=1"/>
+</noscript>
+<!-- End comScore Tag -->
