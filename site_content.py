@@ -21,13 +21,12 @@ def getSiteSource(site_name):
             
     return response.read()
 
-def printRequiredStockPrice():
+from bs4 import BeautifulSoup as bs
+def getStockPrice():
     terminal_source = getSiteSource(MONEY_CONTROL_TERMINAL)
-    from bs4 import BeautifulSoup as bs
     soup = bs(terminal_source, 'html.parser')
-    print("NIFTY 50: " + soup.find(id="Ter_indic").contents[0])
-    print("ACC Ltd : " + soup.find(id="ACC_ltp").contents[0])
-    print("\n")
+    price = float(soup.find(id="Ter_indic").contents[0])
+    return price
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -37,30 +36,18 @@ style.use('fivethirtyeight')
 fig = plt.figure()
 axl = fig.add_subplot(1,1,1)
 
+xs = []
+ys = []
 def animate(i):
-    graph_data = open('example.txt', 'r').read()
-    lines = graph_data.split('\n')
-    xs = []
-    ys = []
-    for line in lines:
-        if len(line)<1:
-            continue
-        x, y = line. split(',')
-        xs.append(x)
-        ys.append(y)
-    
+    stock_price = getStockPrice()
+    xs.append(i)
+    ys.append(stock_price)
     axl.clear()
     axl.plot(xs,ys)
 
-ani = animation.FuncAnimation(fig, animate, interval = 1000)
+ani = animation.FuncAnimation(fig, animate, interval = 10000)
 plt.show()
 
-#import time
-#while(True):
-#    try:
-#        printRequiredStockPrice()
-#        time.sleep(5)
-#        
-#    except KeyboardInterrupt:
-#        break
-#    
+
+
+   

@@ -18,6 +18,11 @@ import requests
 import os
 import numpy as np
 from collections import Counter
+from sklearn import svm, cross_validation, neighbors
+from sklearn.ensemble import VotingClassifier, RandomForestClassifier
+
+MONEY_CONTROL_TERMINAL = "http://www.moneycontrol.com/terminal/index_v1.php?index=9"
+WIKIPEIA_NIFTY_50 = "https://en.wikipedia.org/wiki/NIFTY_50"
 
 style.use('ggplot')
 
@@ -106,8 +111,7 @@ def plot_candlestick_adjusted_close(df):
     plt.show()
     return
 
-MONEY_CONTROL_TERMINAL = "http://www.moneycontrol.com/terminal/index_v1.php?index=9"
-WIKIPEIA_NIFTY_50 = "https://en.wikipedia.org/wiki/NIFTY_50"
+
 
 def save_nifty50_company_names():
     '''
@@ -127,29 +131,28 @@ def save_nifty50_company_names():
         
     return company_names
 
-# TODO1: Need to be revised for NIFTY
 def save_nifty50_tickers():
-    tickers = ['BHEL', 'HINDALCO', 'PNB', 'SBIN', 'VEDL', 'TATASTEEL', 'MRPL', 
-'ONGC', 'GLOBUSSPR']
-#    resp = requests.get(WIKIPEIA_NIFTY_50)
-#    soup = bs.BeautifulSoup(resp.text, 'lxml')
-#    tr = soup.find('tr')
-#    for trs in tr:
-#        print(trs)
-#    tickers = []
-#    for row in table.findAll('tr')[1:]:
-#        ticker = row.findAll('td')[0].text
-#        tickers.append(ticker)
+    '''
+    Returns the list of ticker symbols for NIFTY 50
+    from the table in the Wikipedia page
+    '''
+    resp = requests.get(WIKIPEIA_NIFTY_50)
+    soup = bs.BeautifulSoup(resp.text, 'lxml')
+    table = soup.find('table', {'class': 'wikitable sortable'})
+    tickers = []
+    for row in table.findAll('tr')[1:]:
+        ticker = row.findAll('td')[1].text
+        tickers.append(ticker)
 #        
     with open("nifty50tickers.pickle","wb") as f:
         pickle.dump(tickers,f)
         
     return tickers
 
-
-# TODO2: Need to be revised for NIFTY
 def get_data_from_yahoo(reload_nifty50=False):
-    
+    '''
+    Extracts Data from Yahoo for the NIFTY 50 Tickers
+    '''
     if reload_nifty50:
         tickers = save_nifty50_tickers()
     else:
@@ -159,21 +162,31 @@ def get_data_from_yahoo(reload_nifty50=False):
     if not os.path.exists('stock_dfs'):
         os.makedirs('stock_dfs')
 
-    start = dt.datetime(2000, 1, 1)
+    start = dt.datetime(2010, 1, 1)
     end = dt.datetime(2016, 12, 31)
     
+    print(tickers)
     for ticker in tickers:
         # just in case your connection breaks, we'd like to save our progress!
         if not os.path.exists('stock_dfs/{}.csv'.format(ticker)):
-            df = web.DataReader(ticker+".NS", "yahoo", start, end)
+            yahoo_symbol = ticker + ".NS"
+            
+            try:
+                df = web.DataReader(yahoo_symbol, "yahoo", start, end)
+            except Exception:
+                continue
+            
             df.to_csv('stock_dfs/{}.csv'.format(ticker))
         else:
             print('Already have {}'.format(ticker))
 
     return
     
-#TODO3: Need to be revised for NIFTY 50
 def compile_data():
+    '''
+    Creates a data frame with Adjusted prices of all the tickers of 
+    NIFTY 50
+    '''
     with open("nifty50tickers.pickle","rb") as f:
         tickers = pickle.load(f)
 
@@ -196,8 +209,12 @@ def compile_data():
     print(main_df.head())
     main_df.to_csv('nifty50_joined_closes.csv')
 
-#TODO4: Need to be revised for NIFTY 50
 def visualize_data():
+    '''
+    Plots a correlation heatmap matrix 
+    specifying the correlation among the stocks 
+    listed in the NIFTY 50 index
+    '''
     df = pd.read_csv('nifty50_joined_closes.csv')
     #df['AAPL'].plot()
     #plt.show()
@@ -227,8 +244,12 @@ def visualize_data():
     plt.show()
     
     return
-    
+
+
 def process_data_for_labels(ticker):
+    '''
+    Pre-processing for data 
+    '''
     hm_days = 7
     df = pd.read_csv('nifty50_joined_closes.csv', index_col=0)
     tickers = df.columns.values.tolist()
@@ -272,3 +293,38 @@ def extract_featuresets(ticker):
     y = df['{}_target'.format(ticker)].values
     
     return X,y,df
+    
+def do_ml(ticker):
+    X, y, df = extract_featuresets(ticker)
+    X_train, X_test, y_train, y_test = cross_validation.train_test_split(X,
+                                                        y,
+                                                        test_size=0.25)
+    #clf = neighbors.KNeighborsClassifier()
+
+    clf = VotingClassifier([('lsvc',svm.LinearSVC()),
+                            ('knn',neighbors.KNeighborsClassifier()),
+                            ('rfor',RandomForestClassifier())])
+
+
+    clf.fit(X_train, y_train)
+    confidence = clf.score(X_test, y_test)
+    print('accuracy:',confidence)
+    predictions = clf.predict(X_test)
+    print('predicted class counts:',Counter(predictions))
+    return confidence
+
+## Executing the Machine Learning Startegies on all tickers
+#from statistics import mean
+#
+#with open("sp500tickers.pickle","rb") as f:
+#    tickers = pickle.load(f)
+#
+#accuracies = []
+#for count,ticker in enumerate(tickers):
+#
+#    if count%10==0:
+#        print(count)
+#        
+#    accuracy = do_ml(ticker)
+#    accuracies.append(accuracy)
+#    print("{} accuracy: {}. Average accuracy:{}".format(ticker,accuracy,mean(accuracies)))
