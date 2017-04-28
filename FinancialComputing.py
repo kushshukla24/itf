@@ -193,6 +193,8 @@ def compile_data():
     main_df = pd.DataFrame()
     
     for count,ticker in enumerate(tickers):
+        if ticker=="BAJAJ-AUTO" or ticker=="M&M" or ticker=="ULTRATECH":
+            continue
         df = pd.read_csv('stock_dfs/{}.csv'.format(ticker))
         df.set_index('Date', inplace=True)
 
