@@ -9,8 +9,6 @@ from bs4 import BeautifulSoup
 
 YEN_TO_RUPEE = "https://www.yen2rupees.com"
 MONEY_CONTROL_TERMINAL = "http://www.moneycontrol.com/terminal/index_v1.php?index=11"
-MRPL_SUPPORT = 125.50
-MRPL_RESISTANCE = 132.00
 from_mail = "yenwatcher@gmail.com"
 to_mail = "kushukla@ymail.com"
 
@@ -77,7 +75,7 @@ class sms:
         
 def send_sms(msg):
     q=sms("9765983653","realmadrid")
-    q.send("9730078403",msg)
+    q.send("9765983653",msg)
     q.msgSentToday()
     q.logout()
 
@@ -86,9 +84,9 @@ def getSiteSource(site_name):
     '''
     Returns the source file for the html page
     '''
-    import urllib.request
+    import urllib2
     try:
-        response = urllib.request.urlopen(site_name)
+        response = urllib2.urlopen(site_name)
     except ValueError:
         print("Check the url again!")
     except Exception:

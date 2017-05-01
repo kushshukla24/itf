@@ -32,7 +32,7 @@ def get_equity_price_dataFrame(symbol, start, end):
     Open, Low, High, Close, Adjusted Close, Volume
     for the symbol from Yahoo Finance!
     '''
-    return web.DataReader('BHEL.NS', 'yahoo', start, end)
+    return web.DataReader(symbol, 'yahoo', start, end)
 
 def store_data_to_csv(df, symbol):
     '''
